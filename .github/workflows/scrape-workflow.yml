@@ -24,7 +24,7 @@ jobs:
       - name: Instalar dependencias
         run: |
           python -m pip install --upgrade pip # Actualiza pip
-          pip install pandas lxml html5lib unidecode cloudscraper bs4 re # Instala las librerías necesarias para tu script
+          pip install pandas lxml html5lib unidecode cloudscraper bs4  # Instala las librerías necesarias para tu script
 
       - name: Ejecutar script de Scrape
         # Asegúrate de que la ruta 'scripts/scrape.py' sea correcta
