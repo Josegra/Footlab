@@ -27,7 +27,7 @@ jobs:
           pip install pandas lxml html5lib unidecode
 
       - name: Ejecutar script de shooting
-        run: python salaries_big5.py
+        run: python scripts/salaries_big5.py
 
       - name: Commit y Push del archivo CSV generado
         uses: stefanzweifel/git-auto-commit-action@v5
