@@ -78,20 +78,8 @@ if dfs:
     dicc_reemplazo_nombres = dict(zip(nombres_salarios, nombres_fbref))
     # Reemplazar los nombres en la columna 'Jugador'
     df_final['Player'] = df_final['Player'].replace(dicc_reemplazo_nombres)
-    # Ruta de salida
-    output_dir = './data'
-    output_filename = 'salaries_big5.csv'
-    output_path = os.path.join(output_dir, output_filename)
-
-    # Crear el directorio si no existe
+    # File Location
+    root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    output_dir = os.path.join(root_dir, 'data')
     os.makedirs(output_dir, exist_ok=True)
-
-    # Eliminar el archivo si ya existe
-    if os.path.exists(output_path):
-        os.remove(output_path)
-
-    # Guardar CSV
-    df_final.to_csv(output_path, index=False)
-    print(f"\n¡Proceso completado! Archivo guardado en: {output_path}")
-else:
-    print("\nNo se pudo procesar ningún dato.")
+    df_final.to_csv(os.path.join(output_dir, 'salaries.csv'), index=False)
