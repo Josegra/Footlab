@@ -36,7 +36,7 @@ jobs:
           commit_message: "chore: Actualizar datos scrapeados [skip ci]" # Mensaje del commit
           branch: main # Rama a la que se hará el commit
           # IMPORTANTE: Cambia 'data/scraped_data.csv' si tu script genera un archivo diferente o en otra ubicación
-          file_pattern: ./data/player_stats_cleaned_2024_2025.csv
+          file_pattern: ./data/player_stats_cleaned_2025_2026.csv
           commit_user_name: GitHub Actions Bot
           commit_user_email: actions@github.com
           commit_author: GitHub Actions Bot <actions@github.com>
