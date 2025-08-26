@@ -17,22 +17,38 @@ pos_map = {
     'GK': 'Goalkeeper'  # por si aparece
 }
 
-# Corregir errores como 'FW,D' antes de reemplazar
-df['Pos'] = df['Pos'].str.replace(r'\bD\b', 'DF', regex=True)
+def expand_positions(pos):
+    # Deja nulos tal cual
+    if pd.isna(pos):
+        return np.nan
+    # Asegura string
+    if not isinstance(pos, str):
+        pos = str(pos)
 
-# Reemplazar abreviaturas por nombres completos
-def expand_positions(pos_str):
-    parts = pos_str.split(',')
-    full_parts = [pos_map.get(p.strip(), p.strip()) for p in parts]
+    # Divide por comas, limpia espacios y descarta vacíos
+    parts = [p.strip() for p in pos.split(',') if p and p.strip()]
+
+    # Corrige el token suelto 'D' -> 'DF' (sin tocar 'CDM', 'LDM', etc.)
+    parts = ['DF' if p == 'D' else p for p in parts]
+
+    # Expande usando el diccionario (si no está, deja el original)
+    full_parts = [pos_map.get(p, p) for p in parts]
+
+    # Vuelve a string separado por comas (lo espera el código posterior)
     return ','.join(full_parts)
 
 df['Pos'] = df['Pos'].apply(expand_positions)
 
-# Crear columnas de posición primaria y secundaria
-df['primary_pos'] = df['Pos'].apply(lambda x: x.split(',')[0])
-df['secondary_pos'] = df['Pos'].apply(lambda x: x.split(',')[1] if ',' in x else None)
+# --- Crear columnas de posición primaria y secundaria de forma segura ---
+# Si 'Pos' es <NA>/NaN, las nuevas columnas quedarán como <NA> automáticamente.
+pos_tokens = df['Pos'].str.split(r'\s*,\s*', regex=True)
 
-df['secondary_pos'].value_counts()
+df['primary_pos'] = pos_tokens.str[0]
+df['secondary_pos'] = pos_tokens.str[1]
+
+# Opcional: convertir cadenas vacías en NA (por si quedara algún vacío)
+df['primary_pos'].replace('', pd.NA, inplace=True)
+df['secondary_pos'].replace('', pd.NA, inplace=True)
 
 """#### Replace nations names"""
 
